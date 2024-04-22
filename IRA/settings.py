@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-r6b)2vy-h8@_he%mqyvdc(jrs-lvdd08ee4zi*7qr@qn9yf5-z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
 
 # Application definition
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'IRA.urls'
@@ -70,7 +71,7 @@ TEMPLATES = [
         },
     },
 ]
-AUTH_USER_MODEL = 'guesthouse.CustomUser'
+
 WSGI_APPLICATION = 'IRA.wsgi.application'
 
 
@@ -82,9 +83,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'guesthouse',
         'USER':'root',
-        'PASSWORD':'',
+        'PASSWORD':'Houda16042001',
         'HOST':'localhost',
-        'PORT':'3306'
+        'PORT':'3306',
+        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+       
     }
 }
 
