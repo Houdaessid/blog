@@ -122,12 +122,13 @@
 {% endif %}
     <h1>Réservation de Salle de Réunion</h1>
     <form 
+    
     method="post">
       {% csrf_token %}
 
       {{form.as_p}}
 
-        <input type="submit" value="Valider la réservation">
+        <input type="submit" value="Valider la réservation" >
         <input type="reset" value="Annuler">
     </form>
 </body>

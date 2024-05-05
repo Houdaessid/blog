@@ -1,0 +1,134 @@
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation de Salle de Réunion</title>
+    <link rel="icon" type="image/ico" href="{%static 'images/logo.ico' %}">
+    <style>
+        
+    form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #aed5fd;
+        box-shadow: 0 4px 6px rgba(45, 60, 230, 0.1);
+        background-image: url('images/LEPS.png');
+    }
+    
+ 
+    label {
+        font-weight: bold;
+        color: #124e8a;
+    }
+    
+  
+    input:required,
+    textarea:required,
+    select:required {
+        border-color: #ced4da;
+        max-width: 700px;
+    }
+    
+   
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: border-color 0.3s ease-in-out;
+    }
+    
+  
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: #298ffc;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+ 
+    input[type="submit"],
+    input[type="reset"] {
+        padding: 10px 20px;
+        background-color: #288df9;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+    
+
+    input[type="reset"] {
+        background-color: #dc3545;
+    }
+    
+   
+    input[type="submit"]:hover {
+        background-color: #90c0f3;
+    }
+    
+  
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: border-color 0.3s ease-in-out;
+    }
+    
+   
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.8em;
+    }
+    
+ 
+    small {
+        font-size: 0.8em;
+        color: #6c757d;
+    }
+    h1{
+        margin-left: 400px;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: #007bff;
+    }
+</style>
+</head>
+<body> 
+    <h1>Réservation de Salle de Réunion</h1>
+   
+    <form method="post" action="{% url 'update' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Enregistre" >
+</button>
+
+    </form>
+    <script>
+        function showAlert() {
+            alert("Votre réservation a été modifiée avec succès !");
+        }
+    </script>
+</body>
+
+</html>
+{% endblock %}
