@@ -1,12 +1,8 @@
 from calendar import Calendar
 from datetime import date, timedelta
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 
-from guesthouse.models import Reshebergement, Ressalle
-from .forms import RessalleForm, RessallehebergementForm, ReshebergementForm,UtilisateurForm
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
-from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
 
 import calendar
 import json
@@ -24,8 +20,6 @@ from datetime import date, datetime, timedelta
 #import datetime
 from django.utils.translation import gettext_lazy as _
 from .forms import *
-from django.contrib import messages
-from django.db.models import Q
 from datetime import datetime
 from .models import Hebergement, Reshebergement
 
@@ -45,38 +39,41 @@ def salle_form_view(request):
             return redirect('RessalleForm')
     
     return render(request, 'salle.html', {'form': form})
-def index(request):
-    return render(request, 'index.html')
+
+def home(request):
+    context = {'role': None}
+    user = request.user
+    if user and user.is_authenticated:
+        role = Role.objects.filter(user=user).first()
+        context = {'role': role}
+    return render(request, 'home.html', context=context)
 
 def reservation(request):
     return render(request, 'reservation.html')
+
 def admin(request):
     return render(request, 'admin.html')
+
 def payement(request):
     return render(request, 'payement.html')
+
 def connexion(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        utilisateur = authenticate(request, email=email, password=password) # type: ignore
-        if utilisateur is not None:
-            login(request, utilisateur)
-            return redirect('accueil')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
         else:
-            # Gérer l'échec de la connexion
+            # Handle login failure
             return render(request, 'connexion.html', {'error': 'Identifiants invalides'})
     return render(request, 'connexion.html')
 
-
-def inscription(request):
-    if request.method == 'POST':
-        form = UtilisateurForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = UtilisateurForm()
-    return render(request, 'inscription.html', {'form': form})
+def deconnexion(request):
+    logout(request)
+    return redirect('home')
 
 
 def hebergement_form_view(request):
@@ -106,9 +103,11 @@ def salle_heber_form_view(request):
         form = RessallehebergementForm()
     
     return render(request, 'salle_heber.html', {'form': form})
+
 def liste_attributs(request):
     liste_attributs = Ressalle.objects.all()
     return render(request, "liste.html", {'liste_attributs': liste_attributs})
+
 def update(request):
     obj=Ressalle.objects.get(idressalle=2)
     form = RessalleForm(request.POST or None,instance=obj)  
@@ -120,6 +119,7 @@ def update(request):
         messages = "modification avec succès"
     
     return render(request, 'edit.html', {'form': form, 'message': messages})
+
 def delete(request):
     obj = Ressalle.objects.get(idressalle=2)
     obj.delete()

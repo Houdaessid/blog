@@ -1,8 +1,5 @@
-from django import forms
 from django.forms import ModelForm
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Hebergement, Reshebergement,Ressalle,Ressallehebergement, Salle,Utilisateur
+from .models import Hebergement, Reshebergement,Ressalle,Ressallehebergement, Salle
 
 
 class ReshebergementForm(ModelForm):
@@ -21,11 +18,6 @@ class RessallehebergementForm(ModelForm):
     class Meta:
         model = Ressallehebergement
         fields ="__all__"                                  
-
-class UtilisateurForm(ModelForm):
-    class Meta:
-        model = Utilisateur
-        fields ="__all__"         
 
 class SalleForm(ModelForm):
     class Meta:

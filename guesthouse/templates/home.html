@@ -45,7 +45,8 @@ h3{
 .nav-link{
   font-size: large;
   
-}</style>
+}
+</style>
 </head>
 
 <body>
@@ -53,32 +54,54 @@ h3{
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-               
-                <img src="{%static 'images/logo.png'%}" width="70" height="70">
-                
-          
-            <h3>Guesthouse</h3>
+            <img src="{%static 'images/logo.png'%}" width="70" height="70">
+            <h3>GuestHouse</h3>
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-              <a class="nav-link" href="index.html">accueil <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/">Accueil <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="reservation.html">Réservation</a>
+              {% if user.is_authenticated %}
+                  {% if role.is_chefreception %}
+                    <a class="nav-link" href="/guesthouse/reservation">Réservation</a>
+                  {% endif %}
+              {% endif %}
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="admin.html">administration</a>
+              {% if user.is_authenticated %}
+                {% if role.is_admin %}
+              <a class="nav-link" href="/admin">Administration</a>
+                {% endif %}
+              {% endif %}
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="payement.html">paiement</a>
+              {% if user.is_authenticated %}
+                {% if role.is_financier %}
+                  <a class="nav-link" href="/payement">Paiement</a>
+                {% endif %}
+              {% endif %}
             </li>
 
-            <span class="navbar-icon"><li>
-                  <a href="connexion.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg></a>
+            <div class="navbar-icon">
+              {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <form action="{% url 'deconnexion' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                      Déconnexion
+                    </button>
+                  </form>
                 </li>
-            </span>
+              {% else %}
+                <li class="nav-item">
+                  <a href="guesthouse/connexion">
+                     <button type="submit" class="btn btn-primary">
+                      Connexion
+                    </button> 
+                  </a>
+                </li>
+              {% endif %}
+              </div>
           </ul>
           
         </div>
