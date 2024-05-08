@@ -6,31 +6,14 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import User
 
-
-class Admin(models.Model):
-    idadmin = models.IntegerField(primary_key=True)
-    nom = models.CharField(max_length=45)
-    prenom = models.CharField(max_length=45)
-    email = models.CharField(max_length=45)
-    modpasse = models.CharField(max_length=45)
-    idutilisateur = models.ForeignKey('Utilisateur', models.DO_NOTHING, db_column='idutilisateur', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'admin'
-
-
-class Chefreception(models.Model):
-    idchefreception = models.IntegerField(primary_key=True)
-    nom = models.CharField(max_length=45)
-    prenom = models.CharField(max_length=45)
-    email = models.CharField(max_length=45)
-    idutilisateur = models.ForeignKey('Utilisateur', models.DO_NOTHING, db_column='idutilisateur', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'chefreception'
+class Role(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_directeur = models.BooleanField(default=False)
+    is_chefreception = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    is_financier = models.BooleanField(default=False)
 
 
 class Client(models.Model):
@@ -44,41 +27,6 @@ class Client(models.Model):
     class Meta:
         managed = False
         db_table = 'client'
-
-
-class Directeurs(models.Model):
-    iddirecteurs = models.IntegerField(primary_key=True)
-    nom = models.CharField(max_length=45)
-    prenom = models.CharField(max_length=45)
-    email = models.CharField(max_length=45)
-    modpasse = models.CharField(max_length=45)
-    idutilisateur = models.ForeignKey('Utilisateur', models.DO_NOTHING, db_column='idutilisateur', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'directeurs'
-
-
-class DjangoContentType(models.Model):
-    name = models.CharField(max_length=100)
-    app_label = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
-
-
-class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
 
 
 class GuesthouseEvent(models.Model):
@@ -218,15 +166,3 @@ class Salle(models.Model):
     class Meta:
         managed = False
         db_table = 'salle'
-
-
-class Utilisateur(models.Model):
-    idutilisateur = models.IntegerField(primary_key=True)
-    nom = models.CharField(max_length=45, db_collation='utf8mb4_0900_ai_ci')
-    email = models.CharField(max_length=45, db_collation='utf8mb4_0900_ai_ci')
-    modpasse = models.CharField(max_length=45, db_collation='utf8mb4_0900_ai_ci')
-
-    class Meta:
-        managed = False
-        db_table = 'utilisateur'
-
